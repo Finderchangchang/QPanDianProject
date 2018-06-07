@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VJProject</string>
+    <string name="name_is_error">当前账号不能为空！</string>
+    <string name="pwd_is_error">当前密码不能为空！</string>
+</resources>
