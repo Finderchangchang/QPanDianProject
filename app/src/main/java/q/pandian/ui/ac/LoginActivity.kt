@@ -21,14 +21,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             var model = success as ListRequest<UserModel>
             when (result) {
                 command.login + 1 -> {
-                    if(model.state==1){
-                        var user=model.data?.get(0) as UserModel;
+                    if (model.state == 1) {
+                        var user = model.data?.get(0) as UserModel;
                         Utils.putCache(Url.u_name, user.userName)
                         Utils.putCache(Url.u_id, user.id)
                         Utils.putCache(Url.u_shopid, user.branchcode)
-                        startActivity(Intent(this,HomeActivity::class.java))
+                        startActivity(Intent(this, HomeActivity::class.java))
                         finish()
-                    }else{
+                    } else {
                         toast(model.msg)
                     }
                 }
@@ -36,8 +36,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
                 }
             }
-        }catch (e:Exception){
-            onError(result,success)
+        } catch (e: Exception) {
+            onError(result, success)
         }
 
     }

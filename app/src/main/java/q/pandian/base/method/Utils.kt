@@ -23,6 +23,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ListView
+import q.pandian.base.Url
 import q.pandian.base.ui.BaseApplication
 import java.io.*
 import java.net.URLEncoder
@@ -47,6 +48,10 @@ object Utils {
             return true
         }
         return false
+    }
+
+    fun getToken(method: String): String {
+        return Utils.string2MD5(SimpleDateFormat("yyyy-MM-dd").format(Date()) + method)
     }
 
     /***

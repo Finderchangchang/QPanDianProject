@@ -11,6 +11,7 @@ import gd.mmanage.method.Utils
 import java.lang.reflect.ParameterizedType
 
 import okhttp3.Response
+import q.pandian.base.Url
 import java.security.MessageDigest
 import q.pandian.base.method.Sha1
 import q.pandian.config.sp
@@ -32,41 +33,14 @@ abstract class JsonCallback<T> : AbsCallback<T> {
     var tokee: TypeToken<T>? = null
     override fun onBefore(request: BaseRequest<*>?) {
         super.onBefore(request)
-        var token = Utils.getCache(sp.token)
-        if (TextUtils.isEmpty(token)) {
-            request!!.params("Token", token)//令牌
-        }
-//        val df = SimpleDateFormat("yyyy-MM-dd")//设置日期格式
-//        var TimeStamp = df.format(Date())// new Date()为获取当前系统时间
-//        request!!.params("sign", string2MD5(TimeStamp))
+        var token = Utils.getCache(Url.u_shopid)
+//        if (!TextUtils.isEmpty(token)) {
+//            request!!.params("branchcode", Utils.getCache(Url.u_shopid))
+//            request!!.params("userid", Utils.getCache(Url.u_id))
+//            request!!.params("userName", Utils.getCache(Url.u_name))
+//        }
     }
 
-    fun string2MD5(inStr: String): String {
-        var md5: MessageDigest? = null
-        try {
-            md5 = MessageDigest.getInstance("MD5")
-        } catch (e: java.lang.Exception) {
-            println(e.toString())
-            e.printStackTrace()
-            return ""
-        }
-
-        val charArray = inStr.toCharArray()
-        val byteArray = ByteArray(charArray.size)
-
-        for (i in charArray.indices)
-            byteArray[i] = charArray[i].toByte()
-        val md5Bytes = md5!!.digest(byteArray)
-        val hexValue = StringBuffer()
-        for (i in md5Bytes.indices) {
-            val `val` = md5Bytes[i].toInt() and 0xff
-            if (`val` < 16)
-                hexValue.append("0")
-            hexValue.append(Integer.toHexString(`val`))
-        }
-        return hexValue.toString()
-
-    }
 
     /**
      * 该方法是子线程处理，不能做ui相关的工作
