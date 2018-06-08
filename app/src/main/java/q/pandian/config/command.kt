@@ -5,4 +5,5 @@ package q.pandian.config
  */
 object command {
     var login = 10000
+    var good=11000
 }

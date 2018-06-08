@@ -16,11 +16,12 @@ class UserModel {
      * userName : 用户名称
      */
 
-    var id: String? = null
-    var user: String? = null
-    var pwd: String? = null
-    var power: String? = null
-    var ascription: String? = null
-    var branchcode: String? = null
-    var userName: String? = null
+    var id: String=""
+    var user: String=""
+    var pwd: String=""
+    var power: String=""
+    var ascription: String=""
+    var branchcode: String=""
+    var userName: String=""
+    var addtime=""
 }

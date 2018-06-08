@@ -15,6 +15,7 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.NiceDialog;
 
 import q.pandian.R;
+import q.pandian.base.http.ModelRequest;
 import xyz.bboylin.universialtoast.UniversalToast;
 
 /**
@@ -109,6 +110,13 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AbsActivi
      */
     @Override
     public void onError(int result, Object error) {
-        toast(error.toString());
+        String message="";
+        try {
+            ModelRequest<String> model = (ModelRequest<String>) error;
+            message=model.getMsg();
+        }catch (Exception e){
+            message=error.toString();
+        }
+        toast(message);
     }
 }

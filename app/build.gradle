@@ -9,7 +9,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "q.pandian"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -49,12 +49,23 @@ apply plugin: 'me.tatarka.retrolambda'
 kapt {
     generateStubs = true
 }
+
+apply plugin: 'org.greenrobot.greendao'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.0.0'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':mvvm2')
     compile project(':camerafragment')
     kapt "com.android.databinding:compiler:$kpt_version"
-
+    compile 'com.github.shenyuanqing.zxing:zxing-simplify:1.0.5'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'junit:junit:4.12'
@@ -62,4 +73,6 @@ dependencies {
     compile 'com.github.bboylin:UniversalToast:v1.0.5'//优雅的弹出框
     compile 'com.github.Othershe:NiceDialog:1.1.4'//各类弹出框
     compile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'org.greenrobot:greendao:3.0.1'
+    compile 'org.greenrobot:greendao-generator:3.0.0'
 }
