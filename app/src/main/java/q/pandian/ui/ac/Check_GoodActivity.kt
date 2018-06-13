@@ -27,6 +27,7 @@ import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
@@ -41,16 +42,23 @@ import q.pandian.base.http.ModelRequest
  * */
 class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
     var list = ArrayList<GoodModel>()
-    var num_list=ArrayList<Int>()
+    var num_list = ArrayList<Int>()
     var adapter: CommonAdapter<GoodModel>? = null
     var isRefush = false
-    private fun sum(model:GoodModel):Int{
-        var num=0
-            num+= model.numberOneDesk.toInt()
-            num+= model.numberOneFloor.toInt()
-            num+= model.numberTowFloor.toInt()
+    private fun sum(model: GoodModel): Int {
+        var num = 0
+        if (!TextUtils.isEmpty(model.numberOneDesk)) {
+            num += model.numberOneDesk.toInt()
+        }
+        if (!TextUtils.isEmpty(model.numberOneFloor)) {
+            num += model.numberOneFloor.toInt()
+        }
+        if (!TextUtils.isEmpty(model.numberTowFloor)) {
+            num += model.numberTowFloor.toInt()
+        }
         return num
     }
+
     override fun onSuccess(result: Int, success: Any?) {
         try {
             var model = success as ListRequest<GoodModel>
@@ -60,8 +68,15 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                         list.removeAll(list)
                         list = model.data as ArrayList<GoodModel>
                         num_list.removeAll(num_list)
-                        for(key in list){
-                            num_list.add(sum(key))
+                        for (key in list) {
+                            var num=0
+                            if(!TextUtils.isEmpty(key.numberSale)){
+                                num+=key.numberSale.toInt()
+                            }
+                            if(!TextUtils.isEmpty(key.numberCount)){
+                                num+=key.numberCount.toInt()
+                            }
+                            num_list.add(num)
                         }
                         adapter?.refresh(list)
                         if (isRefush) {
@@ -161,9 +176,11 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
+
                     override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
+
                     override fun afterTextChanged(editable: Editable) {
                         list[position].beizhu = holder?.getText(R.id.beizhu_et)
                     }
@@ -172,12 +189,14 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
+
                     override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
+
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberOneDesk = holder?.getText(R.id.hj1_et)
-                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
+                        holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })
                 holder?.setTextWatcher(R.id.hj2_et, object : TextWatcher {
@@ -191,7 +210,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
 
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberOneFloor = holder?.getText(R.id.hj2_et)
-                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
+                        holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })
                 holder?.setTextWatcher(R.id.hj3_et, object : TextWatcher {
@@ -205,7 +224,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
 
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberTowFloor = holder?.getText(R.id.hj3_et)
-                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
+                        holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })
                 //删除
@@ -253,11 +272,12 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             control?.save_goods(gson)
         }
     }
-    fun chayi(now_good:GoodModel,num:Int):Int{
-        var num=0
-        num=sum(now_good)-num
-        return num
+
+    fun chayi(now_good: GoodModel, num: Int): Int {
+        var nums = sum(now_good) - num
+        return nums
     }
+
     /**
      * 获得运行时权限
      */
