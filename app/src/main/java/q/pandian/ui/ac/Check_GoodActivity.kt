@@ -26,6 +26,8 @@ import com.github.shenyuanqing.zxingsimplify.zxing.Activity.CaptureActivity
 import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import com.google.gson.Gson
 import q.pandian.base.http.ModelRequest
@@ -46,13 +48,16 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             when (result) {
                 command.good + 1 -> {//列表数据
                     if (model.state == 1) {
+                        list.removeAll(list)
                         list = model.data as ArrayList<GoodModel>
+
                         adapter?.refresh(list)
                         if (isRefush) {
                             toast("数据已更新")
                             isRefush = false
                         }
                     } else {
+
                         toast(model.msg)
                     }
                 }
@@ -69,14 +74,15 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             when (result) {
                 command.good + 3 -> {//删除盘点商品
                     if (model.state == 1) {
-
+                        toast("删除成功")
+                        control?.search_goods()
                     } else {
                         toast(model.msg)
                     }
                 }
                 command.good + 4 -> {//保存盘点列表
                     if (model.state == 1) {
-                        4
+                        toast("保存成功")
 
                     } else {
                         toast("请重新扫码")
@@ -84,16 +90,28 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 }
                 command.good + 5 -> {//盘点完成
                     if (model.state == 1) {
+                        toast("盘点完成")
                         control?.search_goods()
                     } else {
                         toast("请重新扫码")
                     }
                 }
                 command.good + 1 -> {
-                    toast(model.msg)
+                    if (model.state == 1) {
+                        toast("成功")
+                    } else {
+                        toast(model.msg)
+                    }
+
                 }
                 command.good + 2 -> {
-                    toast(model.msg)
+                    if (model.state == 1) {
+                        control?.search_goods()
+                        toast("成功")
+                    } else {
+                        toast(model.msg)
+                    }
+
                 }
 
             }
@@ -123,6 +141,45 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 holder?.setText(R.id.hj3_et, t?.numberTowFloor)
                 holder?.setText(R.id.beizhu_et, t?.beizhu)
                 holder?.setText(R.id.item_good_num, t?.num)
+                holder?.setTextWatcher(R.id.hj1_et, object : TextWatcher {
+                    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {
+                        list[position].numberOneDesk = holder?.getText(R.id.hj1_et)
+                    }
+                })
+                holder?.setTextWatcher(R.id.hj2_et, object : TextWatcher {
+                    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {
+                        list[position].numberOneFloor = holder?.getText(R.id.hj2_et)
+                    }
+                })
+                holder?.setTextWatcher(R.id.hj3_et, object : TextWatcher {
+                    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {
+                        list[position].numberTowFloor = holder?.getText(R.id.hj3_et)
+                    }
+                })
                 //删除
                 holder?.setOnClickListener(R.id.del_btn) {
                     builder = AlertDialog.Builder(main!!).setTitle("确定要删除当前数据吗？")
@@ -135,6 +192,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     }
                     builder.show()
                 }
+
                 //完成盘点（单条数据）
                 holder?.setOnClickListener(R.id.pandian_btn) {
                     var list = ArrayList<GoodModel>()
@@ -146,6 +204,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 holder?.setOnClickListener(R.id.detail_btn) {
                     startActivity(Intent(Check_GoodActivity.main, GoodDetailActivity::class.java).putExtra("goodmodel", t))
                 }
+
             }
         }
         main_lv.adapter = adapter
@@ -201,10 +260,10 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
         startActivityForResult(Intent(this, CaptureActivity::class.java), REQUEST_SCAN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_SCAN && resultCode == Activity.RESULT_OK) {
-            control?.scan_good(data.getStringExtra("barCode"))
+            control?.scan_good(data!!.getStringExtra("barCode"))
         }
     }
 

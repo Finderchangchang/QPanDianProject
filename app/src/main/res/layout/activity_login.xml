@@ -10,7 +10,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:text="盘点"
+            android:text="易家亲盘点"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@color/colorPrimary"/>

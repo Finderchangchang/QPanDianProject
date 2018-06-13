@@ -3,7 +3,9 @@ package q.pandian.base.method;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -174,6 +176,12 @@ public class CommonViewHolder {
         view.setOnClickListener(listener);
         return this;
     }
+    //textview监听
+    public CommonViewHolder setTextWatcher(int viewId, TextWatcher tw){
+        TextView view = getView(viewId);
+        view.addTextChangedListener(tw);
+        return this;
+    }
 
     /**
      * 为ImageView设置图片
@@ -183,6 +191,7 @@ public class CommonViewHolder {
      * @return
      */
     public CommonViewHolder setImageResource(int viewId, int drawableId) {
+
         ImageView view = getView(viewId);
         view.setVisibility(View.VISIBLE);
         view.setImageResource(drawableId);
