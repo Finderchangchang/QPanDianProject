@@ -41,8 +41,16 @@ import q.pandian.base.http.ModelRequest
  * */
 class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
     var list = ArrayList<GoodModel>()
+    var num_list=ArrayList<Int>()
     var adapter: CommonAdapter<GoodModel>? = null
     var isRefush = false
+    private fun sum(model:GoodModel):Int{
+        var num=0
+            num+= model.numberOneDesk.toInt()
+            num+= model.numberOneFloor.toInt()
+            num+= model.numberTowFloor.toInt()
+        return num
+    }
     override fun onSuccess(result: Int, success: Any?) {
         try {
             var model = success as ListRequest<GoodModel>
@@ -51,7 +59,10 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     if (model.state == 1) {
                         list.removeAll(list)
                         list = model.data as ArrayList<GoodModel>
-
+                        num_list.removeAll(num_list)
+                        for(key in list){
+                            num_list.add(sum(key))
+                        }
                         adapter?.refresh(list)
                         if (isRefush) {
                             toast("数据已更新")
@@ -153,6 +164,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
 
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberOneDesk = holder?.getText(R.id.hj1_et)
+                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
                     }
                 })
                 holder?.setTextWatcher(R.id.hj2_et, object : TextWatcher {
@@ -166,6 +178,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
 
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberOneFloor = holder?.getText(R.id.hj2_et)
+                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
                     }
                 })
                 holder?.setTextWatcher(R.id.hj3_et, object : TextWatcher {
@@ -179,6 +192,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
 
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberTowFloor = holder?.getText(R.id.hj3_et)
+                        holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
                     }
                 })
                 //删除
@@ -228,7 +242,11 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             control?.scan_success(gson)
         }
     }
-
+    fun chayi(now_good:GoodModel,num:Int):Int{
+        var num=0
+        num=sum(now_good)-num
+        return num
+    }
     /**
      * 获得运行时权限
      */
