@@ -164,8 +164,6 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             //srl.isRefreshing = false
         }
         check_good_save.setOnClickListener {
- list[0].numberOneDesk="19"
-            list[0].numberOneFloor="22"
             var gson = Gson().toJson(list)
             control?.save_goods(gson)
         }
