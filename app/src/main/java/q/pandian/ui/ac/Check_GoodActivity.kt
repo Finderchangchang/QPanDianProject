@@ -69,7 +69,8 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                             isRefush = false
                         }
                     } else {
-
+                        list.removeAll(list)
+                        adapter?.refresh(list)
                         toast(model.msg)
                     }
                 }
@@ -95,7 +96,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 command.good + 4 -> {//保存盘点列表
                     if (model.state == 1) {
                         toast("保存成功")
-
+                        control?.search_goods()
                     } else {
                         toast("请重新扫码")
                     }
@@ -111,7 +112,11 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 command.good + 1 -> {
                     if (model.state == 1) {
                         toast("成功")
+                        list.removeAll(list)
+                        adapter?.refresh(list)
                     } else {
+                        list.removeAll(list)
+                        adapter?.refresh(list)
                         toast(model.msg)
                     }
 
@@ -123,7 +128,6 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     } else {
                         toast(model.msg)
                     }
-
                 }
 
             }
@@ -153,15 +157,24 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 holder?.setText(R.id.hj3_et, t?.numberTowFloor)
                 holder?.setText(R.id.beizhu_et, t?.beizhu)
                 holder?.setText(R.id.item_good_num, t?.num)
+                holder?.setTextWatcher(R.id.beizhu_et, object : TextWatcher {
+                    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+                    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                    }
+                    override fun afterTextChanged(editable: Editable) {
+                        list[position].beizhu = holder?.getText(R.id.beizhu_et)
+                    }
+                })
                 holder?.setTextWatcher(R.id.hj1_et, object : TextWatcher {
                     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
-
                     override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
                     }
-
                     override fun afterTextChanged(editable: Editable) {
                         list[position].numberOneDesk = holder?.getText(R.id.hj1_et)
                         holder.setText(R.id.item_good_num,chayi(list[position],num_list[position]).toString())
@@ -207,19 +220,17 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     }
                     builder.show()
                 }
-
                 //完成盘点（单条数据）
                 holder?.setOnClickListener(R.id.pandian_btn) {
                     var list = ArrayList<GoodModel>()
                     list.add(t!!)
                     var gson = Gson().toJson(list)
-                    control?.save_goods(gson)
+                    control?.scan_success(gson)
                 }
                 //详情
                 holder?.setOnClickListener(R.id.detail_btn) {
                     startActivity(Intent(Check_GoodActivity.main, GoodDetailActivity::class.java).putExtra("goodmodel", t))
                 }
-
             }
         }
         main_lv.adapter = adapter
@@ -239,7 +250,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
         }
         check_good_save.setOnClickListener {
             var gson = Gson().toJson(list)
-            control?.scan_success(gson)
+            control?.save_goods(gson)
         }
     }
     fun chayi(now_good:GoodModel,num:Int):Int{

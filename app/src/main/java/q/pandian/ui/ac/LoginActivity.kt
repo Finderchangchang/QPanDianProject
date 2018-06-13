@@ -48,9 +48,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         control = getModule(MainModule::class.java, this)
         //control!!.check_version()//检查更新操作
 
-        var namestr=Utils.getCache(Url.u_name)
-        var uid=Utils.getCache(Url.u_id)
-        if(!(namestr.equals("")&&uid.equals(""))){
+        var namestr = Utils.getCache(Url.u_name)
+        var uid = Utils.getCache(Url.u_id)
+        if (!(namestr.equals("") && uid.equals(""))) {
 
             startActivity(Intent(this, HomeActivity::class.java))
             finish()

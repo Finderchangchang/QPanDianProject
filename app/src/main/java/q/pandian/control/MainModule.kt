@@ -26,14 +26,14 @@ class MainModule : BaseModule {
      * @param pwd 密码
      * */
     fun login(name: String, pwd: String) {
-        var method="login.aspx"
+        var method = "login.aspx"
         var map = HashMap<String, String>()
         map.put("user", name)
         map.put("pwd", pwd)
-        var sign=string2MD5(SimpleDateFormat("yyyy-MM-dd").format(Date())+method)
-        map.put("sign",sign)
+        var sign = string2MD5(SimpleDateFormat("yyyy-MM-dd").format(Date()) + method)
+        map.put("sign", sign)
         var token = object : TypeToken<ListRequest<UserModel>>() {}//需要解析的多层类
-        HttpUtils<ListRequest<UserModel>>(this, command.login + 1).post(Url.key+method,map, token)
+        HttpUtils<ListRequest<UserModel>>(this, command.login + 1).post(Url.key + method, map, token)
     }
 
     /**
