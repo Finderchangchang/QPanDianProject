@@ -27,6 +27,7 @@ import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
+import com.google.gson.Gson
 import q.pandian.base.http.ModelRequest
 
 
@@ -38,6 +39,7 @@ import q.pandian.base.http.ModelRequest
 class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
     var list = ArrayList<GoodModel>()
     var adapter: CommonAdapter<GoodModel>? = null
+    var isRefush = false
     override fun onSuccess(result: Int, success: Any?) {
         try {
             var model = success as ListRequest<GoodModel>
@@ -46,6 +48,10 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     if (model.state == 1) {
                         list = model.data as ArrayList<GoodModel>
                         adapter?.refresh(list)
+                        if (isRefush) {
+                            toast("数据已更新")
+                            isRefush = false
+                        }
                     } else {
                         toast(model.msg)
                     }
@@ -54,7 +60,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     if (model.state == 1) {
                         control?.search_goods()
                     } else {
-                        toast("请重新扫码")
+                        toast(model.msg)
                     }
                 }
             }
@@ -70,6 +76,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 }
                 command.good + 4 -> {//保存盘点列表
                     if (model.state == 1) {
+                        4
 
                     } else {
                         toast("请重新扫码")
@@ -82,6 +89,13 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                         toast("请重新扫码")
                     }
                 }
+                command.good + 1 -> {
+                    toast(model.msg)
+                }
+                command.good + 2 -> {
+                    toast(model.msg)
+                }
+
             }
         }
 
@@ -108,27 +122,52 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                 holder?.setText(R.id.hj2_et, t?.numberOneFloor)
                 holder?.setText(R.id.hj3_et, t?.numberTowFloor)
                 holder?.setText(R.id.beizhu_et, t?.beizhu)
+                holder?.setText(R.id.item_good_num, t?.num)
                 //删除
                 holder?.setOnClickListener(R.id.del_btn) {
                     builder = AlertDialog.Builder(main!!).setTitle("确定要删除当前数据吗？")
+
                     builder.setPositiveButton("确定") { a, b ->
                         control?.delete_good(t?.id + "")
                     }
-                    builder.setPositiveButton("关闭") { a, b ->
+                    builder.setNegativeButton("关闭") { a, b ->
 
                     }
-                    builder.show();
+                    builder.show()
                 }
                 //完成盘点（单条数据）
                 holder?.setOnClickListener(R.id.pandian_btn) {
-                    control?.scan_success("")
+                    var list = ArrayList<GoodModel>()
+                    list.add(t!!)
+                    var gson = Gson().toJson(list)
+                    control?.scan_success(gson)
+                }
+                //详情
+                holder?.setOnClickListener(R.id.detail_btn) {
+                    startActivity(Intent(Check_GoodActivity.main, GoodDetailActivity::class.java).putExtra("goodmodel", t))
                 }
             }
         }
         main_lv.adapter = adapter
+//        main_lv.setOnItemClickListener{a,b,c,d->
+//            var model=list[c]
+//            startActivity(Intent(this, GoodDetailActivity::class.java).putExtra("goodmodel",model))
+//        }
         srl.setOnRefreshListener {
+            isRefush = true
             control?.search_goods()
             srl.isRefreshing = false
+        }
+        check_good_refush.setOnClickListener {
+            isRefush = true
+            control?.search_goods()
+            //srl.isRefreshing = false
+        }
+        check_good_save.setOnClickListener {
+ list[0].numberOneDesk="19"
+            list[0].numberOneFloor="22"
+            var gson = Gson().toJson(list)
+            control?.save_goods(gson)
         }
     }
 

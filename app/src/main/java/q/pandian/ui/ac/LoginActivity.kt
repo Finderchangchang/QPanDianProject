@@ -33,7 +33,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     }
                 }
                 command.login + 2 -> {
-
+//更新
                 }
             }
         } catch (e: Exception) {
@@ -46,7 +46,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)
-        control!!.check_version()//检查更新操作
+        //control!!.check_version()//检查更新操作
+
+        var namestr=Utils.getCache(Url.u_name)
+        var uid=Utils.getCache(Url.u_id)
+        if(!(namestr.equals("")&&uid.equals(""))){
+
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        }
         login_btn.setOnClickListener {
             var name = name_et.text.toString().trim()
             var pwd = pwd_et.text.toString().trim()

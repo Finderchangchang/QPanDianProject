@@ -34,6 +34,29 @@ public class HttpUtils<T> {
 
     public void post(String url, HashMap<String, String> map, TypeToken<T> type) {
         PostRequest ok = OkGo.post(url);
+
+        if (map != null) {
+            for (String key : map.keySet()) {
+                ok.params(key, map.get(key));
+            }
+        }
+        ok.execute(new JCallback<T>(type) {
+            @Override
+            public void onSuccess(T typeToken, Call call, Response response) {
+                module.callback(command, typeToken);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                module.errorCallback(command,e.getMessage());
+
+            }
+        });
+    }
+    public void get(String url, HashMap<String, String> map, TypeToken<T> type) {
+        // PostRequest ok = OkGo.post(url);
+        GetRequest ok = OkGo.get(url);
         if (map != null) {
             for (String key : map.keySet()) {
                 ok.params(key, map.get(key));

@@ -38,8 +38,11 @@ class GoodModule : BaseModule {
         var map = HashMap<String, String>()
         map.put("barcode", barcode)
         map.put("sign", getToken(method))
+        map.put("branchcode", Utils.getCache(Url.u_shopid))
+        map.put("userid", Utils.getCache(Url.u_id))
+        map.put("userName", Utils.getCache(Url.u_name))
         var token = object : TypeToken<ListRequest<GoodModel>>() {}//需要解析的多层类
-        HttpUtils<ListRequest<GoodModel>>(this, command.good + 2).post(Url.key + method, map, token)
+        HttpUtils<ListRequest<GoodModel>>(this, command.good + 2).get(Url.key + method, map, token)
     }
 
     /**
@@ -50,7 +53,7 @@ class GoodModule : BaseModule {
         var method = "delpandian.aspx"
         var map = HashMap<String, String>()
         map.put("sid", sid)
-        map.put("sign", getToken(method))
+        map.put("userid", Utils.getCache(Url.u_id))
         var token = object : TypeToken<ListRequest<GoodModel>>() {}//需要解析的多层类
         HttpUtils<ListRequest<GoodModel>>(this, command.good + 3).post(Url.key + method, map, token)
     }
@@ -63,9 +66,9 @@ class GoodModule : BaseModule {
         var method = "savepandian.aspx"
         var map = HashMap<String, String>()
         map.put("data", barcode)
-        map.put("sign", getToken(method))
+        map.put("userid", Utils.getCache(Url.u_id))
         var token = object : TypeToken<ListRequest<GoodModel>>() {}//需要解析的多层类
-        HttpUtils<ListRequest<GoodModel>>(this, command.good + 4).post(Url.key + method, map, token)
+        HttpUtils<ListRequest<GoodModel>>(this, command.good + 4).get(Url.key + method, map, token)
     }
 
     /**
@@ -76,8 +79,8 @@ class GoodModule : BaseModule {
         var method = "successpandian.aspx"
         var map = HashMap<String, String>()
         map.put("data", barcode)
-        map.put("sign", getToken(method))
+        map.put("userid", Utils.getCache(Url.u_id))
         var token = object : TypeToken<ListRequest<GoodModel>>() {}//需要解析的多层类
-        HttpUtils<ListRequest<GoodModel>>(this, command.good + 5).post(Url.key + method, map, token)
+        HttpUtils<ListRequest<GoodModel>>(this, command.good + 5).get(Url.key + method, map, token)
     }
 }

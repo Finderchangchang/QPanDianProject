@@ -18,7 +18,7 @@
             android:paddingRight="22dp"
             android:src="@mipmap/fanhui"
             android:layout_centerInParent="true"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/left_tv"
