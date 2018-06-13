@@ -1,5 +1,6 @@
 package q.pandian.base.method;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -177,12 +179,33 @@ public class CommonViewHolder {
         view.setOnClickListener(listener);
         return this;
     }
+
     //textview监听
-    public CommonViewHolder setTextWatcher(int viewId, TextWatcher tw){
+    @SuppressLint("ClickableViewAccessibility")
+    public CommonViewHolder setTextWatcher(final int viewId, TextWatcher tw) {
         EditText view = (EditText) getView(viewId);
         view.addTextChangedListener(tw);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (v.getId()) {
+                    case R.id.hj1_et:
+                    case R.id.hj2_et:
+                    case R.id.hj3_et: {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
         return this;
     }
+
     /**
      * 为ImageView设置图片
      *
