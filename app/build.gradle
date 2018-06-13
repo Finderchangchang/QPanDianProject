@@ -40,11 +40,11 @@ buildscript {
         mavenCentral()
     }
 
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
-    }
+//    dependencies {
+//        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+//    }
 }
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
 kapt {
     generateStubs = true

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -178,11 +179,10 @@ public class CommonViewHolder {
     }
     //textview监听
     public CommonViewHolder setTextWatcher(int viewId, TextWatcher tw){
-        TextView view = getView(viewId);
+        EditText view = (EditText) getView(viewId);
         view.addTextChangedListener(tw);
         return this;
     }
-
     /**
      * 为ImageView设置图片
      *

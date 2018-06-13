@@ -28,6 +28,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.Toast
 import com.google.gson.Gson
 import q.pandian.base.http.ModelRequest
@@ -198,7 +199,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     var list = ArrayList<GoodModel>()
                     list.add(t!!)
                     var gson = Gson().toJson(list)
-                    control?.scan_success(gson)
+                    control?.save_goods(gson)
                 }
                 //详情
                 holder?.setOnClickListener(R.id.detail_btn) {
@@ -224,7 +225,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
         }
         check_good_save.setOnClickListener {
             var gson = Gson().toJson(list)
-            control?.save_goods(gson)
+            control?.scan_success(gson)
         }
     }
 
