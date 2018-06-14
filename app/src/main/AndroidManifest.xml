@@ -29,7 +29,8 @@
 
         <activity android:name=".ui.ac.CarListActivity" />
         <activity android:name=".ui.ac.HomeActivity" />
-        <activity android:name=".ui.ac.Check_GoodActivity" />
+        <activity android:name=".ui.ac.Check_GoodActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.ac.AddGoodActivity" />
         <activity android:name=".ui.ac.GoodDetailActivity"></activity>
     </application>
