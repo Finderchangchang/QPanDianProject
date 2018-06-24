@@ -1,6 +1,7 @@
 package q.pandian.ui.ac
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,6 +30,8 @@ import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.MotionEvent
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.google.gson.Gson
@@ -69,12 +72,12 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                         list = model.data as ArrayList<GoodModel>
                         num_list.removeAll(num_list)
                         for (key in list) {
-                            var num=0
-                            if(!TextUtils.isEmpty(key.numberSale)){
-                                num+=key.numberSale.toInt()
+                            var num = 0
+                            if (!TextUtils.isEmpty(key.numberSale)) {
+                                num += key.numberSale.toInt()
                             }
-                            if(!TextUtils.isEmpty(key.numberCount)){
-                                num+=key.numberCount.toInt()
+                            if (!TextUtils.isEmpty(key.numberCount)) {
+                                num += key.numberCount.toInt()
                             }
                             num_list.add(num)
                         }
@@ -155,6 +158,7 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
     }
 
     private var control: GoodModule? = null
+    var positon = 0;
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         main = this
@@ -163,14 +167,16 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
             getRuntimeRight()
         }
         control?.search_goods()
+
         adapter = object : CommonAdapter<GoodModel>(this, list as MutableList<GoodModel>, R.layout.item_good) {
+            @SuppressLint("ClickableViewAccessibility")
             override fun convert(holder: CommonViewHolder?, t: GoodModel?, position: Int) {
                 holder?.setText(R.id.good_id_tv, t?.barcode)
                 holder?.setText(R.id.good_name_tv, t?.shopName)
-                holder?.setText(R.id.hj1_et, t?.numberOneDesk)
-                holder?.setText(R.id.hj2_et, t?.numberOneFloor)
-                holder?.setText(R.id.hj3_et, t?.numberTowFloor)
-                holder?.setText(R.id.beizhu_et, t?.beizhu)
+                holder?.setHintText(R.id.hj1_et, t?.numberOneDesk)
+                holder?.setHintText(R.id.hj2_et, t?.numberOneFloor)
+                holder?.setHintText(R.id.hj3_et, t?.numberTowFloor)
+                holder?.setHintText(R.id.beizhu_et, t?.beizhu)
                 holder?.setText(R.id.item_good_num, t?.num)
                 holder?.setTextWatcher(R.id.beizhu_et, object : TextWatcher {
                     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -195,7 +201,12 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     }
 
                     override fun afterTextChanged(editable: Editable) {
-                        list[position].numberOneDesk = holder?.getText(R.id.hj1_et)
+                        var txt=holder.getText(R.id.hj1_et)
+                        if(TextUtils.isEmpty(txt)){
+                            list[position].numberOneDesk ="0"
+                        }else{
+                            list[position].numberOneDesk =txt
+                        }
                         holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })
@@ -209,7 +220,12 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     }
 
                     override fun afterTextChanged(editable: Editable) {
-                        list[position].numberOneFloor = holder?.getText(R.id.hj2_et)
+                        var txt=holder.getText(R.id.hj2_et)
+                        if(TextUtils.isEmpty(txt)){
+                            list[position].numberOneFloor ="0"
+                        }else{
+                            list[position].numberOneFloor =txt
+                        }
                         holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })
@@ -223,7 +239,12 @@ class Check_GoodActivity : BaseActivity<ActivityCheckGoodBinding>() {
                     }
 
                     override fun afterTextChanged(editable: Editable) {
-                        list[position].numberTowFloor = holder?.getText(R.id.hj3_et)
+                        var txt=holder.getText(R.id.hj3_et)
+                        if(TextUtils.isEmpty(txt)){
+                            list[position].numberTowFloor ="0"
+                        }else{
+                            list[position].numberTowFloor =txt
+                        }
                         holder.setText(R.id.item_good_num, chayi(list[position], num_list[position]).toString())
                     }
                 })

@@ -66,8 +66,7 @@
                 android:id="@+id/hj1_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:selectAllOnFocus="true" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,7 +87,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:selectAllOnFocus="true"
                 />
         </LinearLayout>
 
@@ -110,7 +108,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:selectAllOnFocus="true"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -129,8 +126,7 @@
             android:id="@+id/beizhu_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:inputType="textMultiLine" />
+            android:gravity="top" />
     </LinearLayout>
 
     <LinearLayout

@@ -36,6 +36,7 @@ public class CommonViewHolder {
     private int mPosition;
     private View mConvertView;
     private Context mContext;
+    public int position;
 
     private CommonViewHolder(Context context, ViewGroup parent, int layoutId,
                              int position) {
@@ -100,6 +101,17 @@ public class CommonViewHolder {
         return (T) view;
     }
 
+    public EditText getEditView(int viewId) {
+        EditText view = (EditText) mViews.get(viewId);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        });
+        return view;
+    }
+
     /**
      * 为TextView设置字符串
      *
@@ -113,6 +125,24 @@ public class CommonViewHolder {
             view.setText("");
         } else {
             view.setText(text + "");
+        }
+        view.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    /**
+     * 为TextView设置字符串
+     *
+     * @param viewId
+     * @param text
+     * @return
+     */
+    public CommonViewHolder setHintText(int viewId, String text) {
+        EditText view = getView(viewId);
+        if (TextUtils.isEmpty(text) || text == "null") {
+            view.setHint("");
+        } else {
+            view.setHint(text + "");
         }
         view.setVisibility(View.VISIBLE);
         return this;
